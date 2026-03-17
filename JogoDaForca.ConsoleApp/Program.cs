@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Reflection.Metadata;
+using System.Security.Cryptography;
 
 class Program
 {
@@ -23,10 +24,14 @@ class Program
             }
 
             bool jogadorAcertouPalavra = false;
+            bool jogadorPerdeu = false;
 
-            while (!jogadorAcertouPalavra)
+            int quantidadeErros = 0;
+
+            while (!jogadorAcertouPalavra && !jogadorPerdeu)
             {
-                Console.WriteLine(letrasAcertadas);
+                Console.WriteLine("Letras Acertadas: " + string.Join("", letrasAcertadas));
+                Console.WriteLine("Erros Cometidos: " + quantidadeErros);
 
                 Console.WriteLine("Digite uma letra: ");
                 string? strLetra = Console.ReadLine();
@@ -42,6 +47,8 @@ class Program
 
                 char letraChute = char.ToUpper(Convert.ToChar(strLetra));
 
+                bool letraEncontrada = false;
+
                 for (int contador = 0; contador < palavraAleatória.Length; contador++)
                 {
                     char letraAtual = palavraAleatória[contador];
@@ -49,10 +56,33 @@ class Program
                     if (letraChute == letraAtual)
                     {
                         letrasAcertadas[contador] = letraAtual;
+                        letraEncontrada = true;
                     }
+                   
+                }
+
+                if (letraEncontrada == false)
+                {
+                    quantidadeErros++;
+                }
+
+                if (jogadorAcertouPalavra)
+                {
+            
+            Console.WriteLine("---------------------------");
+            Console.WriteLine($"Você acertou, parabéns você fez o mínimo.");
+            Console.WriteLine("---------------------------");
+                } else if (jogadorPerdeu)
+                {
+                
+            Console.WriteLine("---------------------------");
+            Console.WriteLine("Não consegue nem fazer o mínimo, não acertou...");
+            Console.WriteLine("---------------------------");
                 }
 
                 jogadorAcertouPalavra = palavraAleatória == string.Join("", letrasAcertadas);
+
+                jogadorPerdeu = quantidadeErros > 5;
 
             }
 
@@ -71,7 +101,7 @@ class Program
 
             Console.WriteLine("Escolhendo palavra...");
             string[] palavras = [
-        "ABACATE",
+            "ABACATE",
             "ABACAXI",
             "ACEROLA",
             "AÇAÍ",
